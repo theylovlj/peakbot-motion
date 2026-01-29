@@ -192,8 +192,7 @@ function createTimeline() {
   gsap.set(channelsContainer, { y: 0 });
   gsap.set([userBubble1, botBubble, userBubble2], { opacity: 0, y: 20 });
   gsap.set([userBubble3, botBubble2], { opacity: 0, y: 20 });
-  gsap.set(darkOverlay, { opacity: 0 });
-  darkOverlay.classList.remove('right-focus', 'chat-focus');
+  gsap.set(darkOverlay, { opacity: 0, '--focus-x': '50%', '--focus-y': '50%' });
   gsap.set(editCursor, { opacity: 0 });
 
   // Reset server branding
@@ -312,9 +311,11 @@ function createTimeline() {
 
   // ========== PHASE 5: Chat Conversation ==========
 
-  // Switch overlay to chat focus (left side)
-  masterTL.call(() => {
-    darkOverlay.classList.add('chat-focus');
+  // Smoothly move focus to chat (left side)
+  masterTL.to(darkOverlay, {
+    '--focus-x': '32%',
+    duration: 0.5,
+    ease: "power2.inOut"
   });
 
   // User message 1 appears - "can you simplify it?"
@@ -361,10 +362,12 @@ function createTimeline() {
     ease: "silkySmooth"
   });
 
-  // Switch overlay back to center focus (Discord panel)
-  masterTL.call(() => {
-    darkOverlay.classList.remove('chat-focus');
-  }, null, "-=0.2");
+  // Smoothly move focus back to center (Discord panel)
+  masterTL.to(darkOverlay, {
+    '--focus-x': '50%',
+    duration: 0.4,
+    ease: "power2.inOut"
+  }, "-=0.2");
 
   // ========== PHASE 6: Move Server Back to Center FIRST ==========
   masterTL.to(morphBox, {
@@ -565,9 +568,11 @@ function createTimeline() {
   // Brief pause before next phase
   masterTL.to({}, { duration: 0.5 });
 
-  // Switch overlay to right focus for chat
-  masterTL.call(() => {
-    darkOverlay.classList.add('right-focus');
+  // Smoothly move focus to chat (right side)
+  masterTL.to(darkOverlay, {
+    '--focus-x': '68%',
+    duration: 0.5,
+    ease: "power2.inOut"
   });
 
   // Move server to left side
@@ -608,10 +613,12 @@ function createTimeline() {
     ease: "silkySmooth"
   });
 
-  // Switch back to center focus
-  masterTL.call(() => {
-    darkOverlay.classList.remove('right-focus');
-  }, null, "-=0.2");
+  // Smoothly move focus back to center
+  masterTL.to(darkOverlay, {
+    '--focus-x': '50%',
+    duration: 0.4,
+    ease: "power2.inOut"
+  }, "-=0.2");
 
   // Move server back to center
   masterTL.to(morphBox, {

@@ -314,7 +314,7 @@ function createTimeline() {
   // Smoothly move focus to chat (left side)
   masterTL.to(darkOverlay, {
     '--focus-x': '32%',
-    duration: 0.5,
+    duration: 0.35,
     ease: "power2.inOut"
   });
 
@@ -365,7 +365,7 @@ function createTimeline() {
   // Smoothly move focus back to center (Discord panel)
   masterTL.to(darkOverlay, {
     '--focus-x': '50%',
-    duration: 0.4,
+    duration: 0.3,
     ease: "power2.inOut"
   }, "-=0.2");
 
@@ -571,7 +571,7 @@ function createTimeline() {
   // Smoothly move focus to chat (right side)
   masterTL.to(darkOverlay, {
     '--focus-x': '68%',
-    duration: 0.5,
+    duration: 0.35,
     ease: "power2.inOut"
   });
 
@@ -616,7 +616,7 @@ function createTimeline() {
   // Smoothly move focus back to center
   masterTL.to(darkOverlay, {
     '--focus-x': '50%',
-    duration: 0.4,
+    duration: 0.3,
     ease: "power2.inOut"
   }, "-=0.2");
 

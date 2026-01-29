@@ -401,9 +401,9 @@ body {
     circle at var(--focus-x) var(--focus-y),
     transparent 0%,
     transparent 15%,
-    rgba(0, 0, 0, 0.02) 25%,
-    rgba(0, 0, 0, 0.05) 40%,
-    rgba(0, 0, 0, 0.10) 100%
+    rgba(0, 0, 0, 0.015) 25%,
+    rgba(0, 0, 0, 0.035) 40%,
+    rgba(0, 0, 0, 0.067) 100%
   );
   pointer-events: none;
   opacity: 0;

@@ -355,7 +355,11 @@ function createTimeline() {
   masterTL.to(darkOverlay, {
     opacity: 0,
     duration: 0.4,
-    ease: "power2.out"
+    ease: "power2.out",
+    onComplete: () => {
+      // Pre-set right-focus class while invisible for smooth transition to third chat
+      darkOverlay.classList.add('right-focus');
+    }
   }, "-=0.3");
 
   // ========== PHASE 6: Move Server Back to Center FIRST ==========
@@ -564,11 +568,7 @@ function createTimeline() {
     ease: "morphEase"
   });
 
-  // Switch overlay to right focus and fade in
-  masterTL.call(() => {
-    darkOverlay.classList.add('right-focus');
-  });
-
+  // Fade in dark overlay (already has right-focus class from phase 6)
   masterTL.to(darkOverlay, {
     opacity: 1,
     duration: 0.4,

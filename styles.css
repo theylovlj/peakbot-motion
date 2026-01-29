@@ -399,9 +399,9 @@ body {
     circle at 32% 50%,
     transparent 0%,
     transparent 20%,
-    rgba(0, 0, 0, 0.05) 35%,
-    rgba(0, 0, 0, 0.12) 50%,
-    rgba(0, 0, 0, 0.25) 100%
+    rgba(0, 0, 0, 0.02) 35%,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(0, 0, 0, 0.10) 100%
   );
   pointer-events: none;
   opacity: 0;
@@ -413,9 +413,9 @@ body {
     circle at 68% 50%,
     transparent 0%,
     transparent 20%,
-    rgba(0, 0, 0, 0.05) 35%,
-    rgba(0, 0, 0, 0.12) 50%,
-    rgba(0, 0, 0, 0.25) 100%
+    rgba(0, 0, 0, 0.02) 35%,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(0, 0, 0, 0.10) 100%
   );
 }
 

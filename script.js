@@ -1,4 +1,4 @@
-// PeakBot Motion v1.5 - balanced pace
+// PeakBot Motion v1.6 - 1.1x slower
 // Elements
 const morphBox = document.getElementById('morphBox');
 const inputContent = document.getElementById('inputContent');
@@ -211,6 +211,9 @@ function createTimeline() {
       updatePlayPauseIcon();
     }
   });
+
+  // Base speed - 1.1x slower than coded values
+  masterTL.timeScale(0.91);
 
   // ========== PHASE 1: Box Appears ==========
   masterTL.to(morphBox, {
@@ -739,8 +742,9 @@ timeline.addEventListener('input', (e) => {
   updatePlayPauseIcon();
 });
 
+const BASE_SPEED = 0.91; // 1.1x slower
 speedSelect.addEventListener('change', (e) => {
-  masterTL.timeScale(parseFloat(e.target.value));
+  masterTL.timeScale(parseFloat(e.target.value) * BASE_SPEED);
 });
 
 // Keyboard shortcuts

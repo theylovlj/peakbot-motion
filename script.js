@@ -1,4 +1,4 @@
-// PeakBot Motion v1.6 - 1.1x slower
+// PeakBot Motion v1.7 - 10% slower
 // Elements
 const morphBox = document.getElementById('morphBox');
 const inputContent = document.getElementById('inputContent');
@@ -212,8 +212,8 @@ function createTimeline() {
     }
   });
 
-  // Base speed - 1.1x slower than coded values
-  masterTL.timeScale(0.91);
+  // Base speed - 10% slower than coded values
+  masterTL.timeScale(0.9);
 
   // ========== PHASE 1: Box Appears ==========
   masterTL.to(morphBox, {
@@ -742,7 +742,7 @@ timeline.addEventListener('input', (e) => {
   updatePlayPauseIcon();
 });
 
-const BASE_SPEED = 0.91; // 1.1x slower
+const BASE_SPEED = 0.9; // 10% slower
 speedSelect.addEventListener('change', (e) => {
   masterTL.timeScale(parseFloat(e.target.value) * BASE_SPEED);
 });

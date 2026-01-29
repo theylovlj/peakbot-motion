@@ -193,7 +193,7 @@ function createTimeline() {
   gsap.set([userBubble1, botBubble, userBubble2], { opacity: 0, y: 20 });
   gsap.set([userBubble3, botBubble2], { opacity: 0, y: 20 });
   gsap.set(darkOverlay, { opacity: 0 });
-  darkOverlay.classList.remove('right-focus');
+  darkOverlay.classList.remove('right-focus', 'chat-focus');
   gsap.set(editCursor, { opacity: 0 });
 
   // Reset server branding
@@ -289,6 +289,13 @@ function createTimeline() {
     ease: "snappySpring"
   }, "-=0.2");
 
+  // Show dark overlay focused on Discord panel (center)
+  masterTL.to(darkOverlay, {
+    opacity: 1,
+    duration: 0.4,
+    ease: "power2.out"
+  }, "-=0.15");
+
   // ========== PHASE 4: Scroll Through Channels ==========
   masterTL.to(channelsContainer, {
     y: -580,
@@ -305,12 +312,10 @@ function createTimeline() {
 
   // ========== PHASE 5: Chat Conversation ==========
 
-  // Fade in dark overlay with feathered mask
-  masterTL.to(darkOverlay, {
-    opacity: 1,
-    duration: 0.35,
-    ease: "power2.out"
-  }, "-=0.25");
+  // Switch overlay to chat focus (left side)
+  masterTL.call(() => {
+    darkOverlay.classList.add('chat-focus');
+  });
 
   // User message 1 appears - "can you simplify it?"
   masterTL.to(userBubble1, {
@@ -347,7 +352,7 @@ function createTimeline() {
 
   // ========== PHASE 6: Simplify Channels ==========
 
-  // Fade out chat bubbles and overlay
+  // Fade out chat bubbles
   masterTL.to([userBubble1, botBubble, userBubble2], {
     opacity: 0,
     y: -15,
@@ -356,22 +361,17 @@ function createTimeline() {
     ease: "silkySmooth"
   });
 
-  masterTL.to(darkOverlay, {
-    opacity: 0,
-    duration: 0.3,
-    ease: "power2.out",
-    onComplete: () => {
-      // Pre-set right-focus class while invisible for smooth transition to third chat
-      darkOverlay.classList.add('right-focus');
-    }
-  }, "-=0.25");
+  // Switch overlay back to center focus (Discord panel)
+  masterTL.call(() => {
+    darkOverlay.classList.remove('chat-focus');
+  }, null, "-=0.2");
 
   // ========== PHASE 6: Move Server Back to Center FIRST ==========
   masterTL.to(morphBox, {
     left: '50%',
     duration: 0.5,
     ease: "morphEase"
-  }, "-=0.2");
+  }, "-=0.15");
 
   // Scroll back up smoothly
   masterTL.to(channelsContainer, {
@@ -565,6 +565,11 @@ function createTimeline() {
   // Brief pause before next phase
   masterTL.to({}, { duration: 0.5 });
 
+  // Switch overlay to right focus for chat
+  masterTL.call(() => {
+    darkOverlay.classList.add('right-focus');
+  });
+
   // Move server to left side
   masterTL.to(morphBox, {
     left: '32%',
@@ -572,25 +577,18 @@ function createTimeline() {
     ease: "morphEase"
   });
 
-  // Fade in dark overlay (already has right-focus class from phase 6)
-  masterTL.to(darkOverlay, {
-    opacity: 1,
-    duration: 0.3,
-    ease: "power2.out"
-  }, "-=0.3");
-
-  // User message 3 appears - "can you brand it"
+  // User message 3 appears - "can you brand it to peak?"
   masterTL.to(userBubble3, {
     opacity: 1,
     y: 0,
     duration: 0.4,
     ease: "gentleOut"
-  }, "-=0.15");
+  }, "-=0.3");
 
   // Pause before bot responds
   masterTL.to({}, { duration: 0.35 });
 
-  // Bot response appears - "on it"
+  // Bot response appears - "say less"
   masterTL.to(botBubble2, {
     opacity: 1,
     y: 0,
@@ -601,7 +599,7 @@ function createTimeline() {
   // Pause before action
   masterTL.to({}, { duration: 0.35 });
 
-  // Fade out chat and overlay
+  // Fade out chat bubbles
   masterTL.to([userBubble3, botBubble2], {
     opacity: 0,
     y: -15,
@@ -610,22 +608,17 @@ function createTimeline() {
     ease: "silkySmooth"
   });
 
-  masterTL.to(darkOverlay, {
-    opacity: 0,
-    duration: 0.3,
-    ease: "power2.out"
-  }, "-=0.25");
-
+  // Switch back to center focus
   masterTL.call(() => {
     darkOverlay.classList.remove('right-focus');
-  });
+  }, null, "-=0.2");
 
   // Move server back to center
   masterTL.to(morphBox, {
     left: '50%',
     duration: 0.45,
     ease: "morphEase"
-  }, "-=0.2");
+  }, "-=0.15");
 
   // ========== PHASE 9: BRANDING CHANGE ==========
 

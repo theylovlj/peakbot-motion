@@ -51,7 +51,7 @@ const channelData = [
     { name: "announcements", emoji: "📢" },
     { name: "server-updates", emoji: "🔔" }
   ]},
-  { category: "COMMUNITY", channels: [
+  { category: "CHAT", channels: [
     { name: "general", emoji: "💬" },
     { name: "introductions", emoji: "🙋" },
     { name: "off-topic", emoji: "🎲" },
@@ -527,14 +527,6 @@ function createTimeline() {
       const cat = document.querySelector(`.channel-category[data-category="${catName}"]`);
       if (cat) cat.remove();
     });
-
-    // Rename COMMUNITY to CHAT
-    const communityCategory = document.querySelector('.channel-category[data-category="COMMUNITY"]');
-    if (communityCategory) {
-      communityCategory.dataset.category = 'CHAT';
-      const categoryName = communityCategory.querySelector('.category-name');
-      if (categoryName) categoryName.textContent = 'CHAT';
-    }
 
     // Reset only the selection highlight styles on remaining channels
     const remainingChannels = document.querySelectorAll('.channel');

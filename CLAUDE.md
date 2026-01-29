@@ -13,3 +13,4 @@
 - All chat conversations must have consistent positioning (same spacing from edges)
 - Keep spacing symmetrical between Discord panel and chat containers
 - Always use the dark overlay/mask when focusing on chat or any main element - draws attention to the focus area
+- ITS ALWAYS A FAST FUCKING PACE ANIMATION - overlap animations, keep it snappy, no slow bullshit

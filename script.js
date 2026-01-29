@@ -1,4 +1,4 @@
-// PeakBot Motion v1.3 - CHAT category from start
+// PeakBot Motion v1.4 - FAST PACE
 // Elements
 const morphBox = document.getElementById('morphBox');
 const inputContent = document.getElementById('inputContent');
@@ -216,7 +216,7 @@ function createTimeline() {
   masterTL.to(morphBox, {
     scale: 1,
     opacity: 1,
-    duration: 0.7,
+    duration: 0.4,
     ease: "gentleOut"
   });
 
@@ -224,23 +224,23 @@ function createTimeline() {
   masterTL.to('#inputText .char', {
     opacity: 1,
     y: 0,
-    duration: 0.5,
-    stagger: 0.02,
+    duration: 0.3,
+    stagger: 0.015,
     ease: "silkySmooth"
-  }, "-=0.4");
+  }, "-=0.3");
 
   // ========== PHASE 2: MORPH TRANSITION (stays centered) ==========
   // Anticipation - slight scale up before transform
   masterTL.to(morphBox, {
     scale: 1.03,
-    duration: 0.12,
+    duration: 0.08,
     ease: "power2.in"
   });
 
   // Scale down with snap
   masterTL.to(morphBox, {
     scale: 0.96,
-    duration: 0.15,
+    duration: 0.1,
     ease: "power2.out"
   });
 
@@ -248,9 +248,9 @@ function createTimeline() {
   masterTL.to(inputContent, {
     opacity: 0,
     scale: 0.94,
-    duration: 0.25,
+    duration: 0.15,
     ease: "power2.in"
-  }, "-=0.1");
+  }, "-=0.08");
 
   // Main morph - expand and transform
   masterTL.to(morphBox, {
@@ -262,85 +262,85 @@ function createTimeline() {
     scale: 1,
     xPercent: -50,
     yPercent: -50,
-    duration: 0.65,
+    duration: 0.4,
     ease: "morphEase"
-  }, "-=0.15");
+  }, "-=0.1");
 
   // ========== PHASE 3: Channel Content Fades In ==========
   masterTL.to(channelContent, {
     opacity: 1,
-    duration: 0.35,
+    duration: 0.2,
     ease: "silkySmooth"
-  }, "-=0.35");
+  }, "-=0.25");
 
   // Categories appear with scale and slide
   masterTL.to('.channel-category', {
     opacity: 1,
     y: 0,
     scale: 1,
-    duration: 0.5,
+    duration: 0.3,
     stagger: {
-      each: 0.06,
+      each: 0.04,
       ease: "power1.in"
     },
     ease: "snappySpring"
-  }, "-=0.25");
+  }, "-=0.15");
 
   // ========== PHASE 4: Scroll Through Channels ==========
   masterTL.to(channelsContainer, {
     y: -580,
-    duration: 1.8,
+    duration: 1.0,
     ease: "morphEase"
-  }, "-=0.2");
+  }, "-=0.1");
 
   // ========== PHASE 4.5: Move Server to the Right ==========
   masterTL.to(morphBox, {
     left: '68%',
-    duration: 1,
+    duration: 0.5,
     ease: "morphEase"
-  }, "-=0.3");
+  }, "-=0.4");
 
   // ========== PHASE 5: Chat Conversation ==========
 
   // Fade in dark overlay with feathered mask
   masterTL.to(darkOverlay, {
     opacity: 1,
-    duration: 0.5,
+    duration: 0.25,
     ease: "power2.out"
-  }, "-=0.3");
+  }, "-=0.2");
 
   // User message 1 appears - "can you simplify it?"
   masterTL.to(userBubble1, {
     opacity: 1,
     y: 0,
-    duration: 0.5,
+    duration: 0.3,
     ease: "gentleOut"
-  }, "-=0.3");
+  }, "-=0.15");
 
   // Pause before bot responds
-  masterTL.to({}, { duration: 0.5 });
+  masterTL.to({}, { duration: 0.25 });
 
   // Bot response appears - "sure, how minimal?"
   masterTL.to(botBubble, {
     opacity: 1,
     y: 0,
-    duration: 0.5,
+    duration: 0.3,
     ease: "gentleOut"
   });
 
   // Pause before user responds
-  masterTL.to({}, { duration: 0.5 });
+  masterTL.to({}, { duration: 0.25 });
 
   // User message 2 appears - "just the basics"
   masterTL.to(userBubble2, {
     opacity: 1,
     y: 0,
-    duration: 0.5,
+    duration: 0.3,
     ease: "gentleOut"
   });
 
   // Pause before action
-  masterTL.to({}, { duration: 0.6 });
+  masterTL.to({}, { duration: 0.3 });
 
   // ========== PHASE 6: Simplify Channels ==========
 
@@ -348,36 +348,36 @@ function createTimeline() {
   masterTL.to([userBubble1, botBubble, userBubble2], {
     opacity: 0,
     y: -15,
-    duration: 0.4,
-    stagger: 0.06,
+    duration: 0.25,
+    stagger: 0.04,
     ease: "silkySmooth"
   });
 
   masterTL.to(darkOverlay, {
     opacity: 0,
-    duration: 0.4,
+    duration: 0.25,
     ease: "power2.out",
     onComplete: () => {
       // Pre-set right-focus class while invisible for smooth transition to third chat
       darkOverlay.classList.add('right-focus');
     }
-  }, "-=0.3");
+  }, "-=0.2");
 
   // ========== PHASE 6: Move Server Back to Center FIRST ==========
   masterTL.to(morphBox, {
     left: '50%',
-    duration: 0.7,
+    duration: 0.4,
     ease: "morphEase"
-  }, "-=0.2");
+  }, "-=0.15");
 
   // Scroll back up smoothly
   masterTL.to(channelsContainer, {
     y: 0,
-    duration: 0.5,
+    duration: 0.3,
     ease: "silkySmooth"
-  }, "-=0.5");
+  }, "-=0.35");
 
-  masterTL.to({}, { duration: 0.2 });
+  masterTL.to({}, { duration: 0.1 });
 
   // ========== PHASE 7: BATCH SELECT & DELETE (IMPROVED) ==========
 
@@ -394,8 +394,8 @@ function createTimeline() {
           backgroundColor: 'rgba(237, 66, 69, 0.4)',
           boxShadow: '0 0 15px rgba(237, 66, 69, 0.6)',
           scale: 1.02,
-          delay: i * 0.08,
-          duration: 0.25,
+          delay: i * 0.04,
+          duration: 0.15,
           ease: "power2.out"
         });
       }
@@ -408,15 +408,15 @@ function createTimeline() {
         gsap.to(cat, {
           backgroundColor: 'rgba(237, 66, 69, 0.12)',
           boxShadow: '0 0 10px rgba(237, 66, 69, 0.3)',
-          delay: 0.4 + i * 0.1,
-          duration: 0.3,
+          delay: 0.2 + i * 0.05,
+          duration: 0.2,
           ease: "power2.out"
         });
       }
     });
   });
 
-  masterTL.to({}, { duration: 1 });
+  masterTL.to({}, { duration: 0.5 });
 
   // --- Step 3: Glow pulses brighter (confirmation) ---
   masterTL.call(() => {
@@ -425,14 +425,14 @@ function createTimeline() {
       if (ch) {
         gsap.to(ch, {
           boxShadow: '0 0 25px rgba(237, 66, 69, 0.8)',
-          duration: 0.2,
+          duration: 0.12,
           ease: "power2.in"
         });
       }
     });
   });
 
-  masterTL.to({}, { duration: 0.4 });
+  masterTL.to({}, { duration: 0.2 });
 
   // --- Step 4: Delete all selected (smooth slide out) ---
   masterTL.call(() => {
@@ -445,13 +445,13 @@ function createTimeline() {
         const currentHeight = ch.offsetHeight;
         gsap.set(ch, { height: currentHeight, overflow: 'hidden' });
 
-        const exitTL = gsap.timeline({ delay: i * 0.06 });
+        const exitTL = gsap.timeline({ delay: i * 0.03 });
 
         // Slight anticipation
         exitTL.to(ch, {
           x: 8,
           scale: 1.04,
-          duration: 0.12,
+          duration: 0.08,
           ease: "power2.out"
         });
 
@@ -462,7 +462,7 @@ function createTimeline() {
           opacity: 0,
           rotation: -3,
           filter: 'blur(4px)',
-          duration: 0.5,
+          duration: 0.3,
           ease: "power2.inOut"
         });
 
@@ -473,9 +473,9 @@ function createTimeline() {
           paddingBottom: 0,
           marginTop: 0,
           marginBottom: 0,
-          duration: 0.4,
+          duration: 0.25,
           ease: "power3.inOut"
-        }, "-=0.25");
+        }, "-=0.15");
       }
     });
 
@@ -487,13 +487,13 @@ function createTimeline() {
         gsap.set(cat, { height: currentHeight, overflow: 'hidden' });
 
         // Stagger after individual channels start leaving
-        const exitTL = gsap.timeline({ delay: 0.25 + i * 0.15 });
+        const exitTL = gsap.timeline({ delay: 0.1 + i * 0.08 });
 
         // Subtle anticipation for the whole section
         exitTL.to(cat, {
           x: 5,
           scale: 1.01,
-          duration: 0.1,
+          duration: 0.06,
           ease: "power2.out"
         });
 
@@ -502,7 +502,7 @@ function createTimeline() {
           x: -80,
           opacity: 0,
           filter: 'blur(2px)',
-          duration: 0.45,
+          duration: 0.3,
           ease: "power2.inOut"
         });
 
@@ -511,14 +511,14 @@ function createTimeline() {
           height: 0,
           marginTop: 0,
           marginBottom: 0,
-          duration: 0.5,
+          duration: 0.3,
           ease: "power3.inOut"
-        }, "-=0.2");
+        }, "-=0.15");
       }
     });
   });
 
-  masterTL.to({}, { duration: 1.2 });
+  masterTL.to({}, { duration: 0.6 });
 
   // --- Step 5: Clean up deleted elements & settle ---
   masterTL.call(() => {
@@ -539,7 +539,7 @@ function createTimeline() {
       gsap.to(ch, {
         backgroundColor: 'transparent',
         boxShadow: 'none',
-        duration: 0.2,
+        duration: 0.15,
         ease: "power2.out"
       });
     });
@@ -549,69 +549,69 @@ function createTimeline() {
       gsap.to(cat, {
         backgroundColor: 'transparent',
         boxShadow: 'none',
-        duration: 0.2,
+        duration: 0.15,
         ease: "power2.out"
       });
     });
   });
 
-  masterTL.to({}, { duration: 0.3 });
+  masterTL.to({}, { duration: 0.15 });
 
   // ========== PHASE 8: THIRD CHAT - BRANDING ==========
 
   // Brief pause before next phase
-  masterTL.to({}, { duration: 0.8 });
+  masterTL.to({}, { duration: 0.3 });
 
   // Move server to left side
   masterTL.to(morphBox, {
     left: '32%',
-    duration: 0.8,
+    duration: 0.4,
     ease: "morphEase"
   });
 
   // Fade in dark overlay (already has right-focus class from phase 6)
   masterTL.to(darkOverlay, {
     opacity: 1,
-    duration: 0.4,
+    duration: 0.2,
     ease: "power2.out"
-  }, "-=0.3");
+  }, "-=0.25");
 
-  // User message 3 appears - "can you name it peak community"
+  // User message 3 appears - "can you brand it"
   masterTL.to(userBubble3, {
     opacity: 1,
     y: 0,
-    duration: 0.5,
+    duration: 0.3,
     ease: "gentleOut"
-  }, "-=0.2");
+  }, "-=0.1");
 
   // Pause before bot responds
-  masterTL.to({}, { duration: 0.6 });
+  masterTL.to({}, { duration: 0.25 });
 
-  // Bot response appears - "done"
+  // Bot response appears - "on it"
   masterTL.to(botBubble2, {
     opacity: 1,
     y: 0,
-    duration: 0.5,
+    duration: 0.3,
     ease: "gentleOut"
   });
 
   // Pause before action
-  masterTL.to({}, { duration: 0.5 });
+  masterTL.to({}, { duration: 0.25 });
 
   // Fade out chat and overlay
   masterTL.to([userBubble3, botBubble2], {
     opacity: 0,
     y: -15,
-    duration: 0.4,
-    stagger: 0.06,
+    duration: 0.25,
+    stagger: 0.04,
     ease: "silkySmooth"
   });
 
   masterTL.to(darkOverlay, {
     opacity: 0,
-    duration: 0.4,
+    duration: 0.25,
     ease: "power2.out"
-  }, "-=0.3");
+  }, "-=0.2");
 
   masterTL.call(() => {
     darkOverlay.classList.remove('right-focus');
@@ -620,13 +620,13 @@ function createTimeline() {
   // Move server back to center
   masterTL.to(morphBox, {
     left: '50%',
-    duration: 0.6,
+    duration: 0.35,
     ease: "morphEase"
-  }, "-=0.2");
+  }, "-=0.15");
 
   // ========== PHASE 9: BRANDING CHANGE ==========
 
-  masterTL.to({}, { duration: 0.3 });
+  masterTL.to({}, { duration: 0.15 });
 
   // Animate server icon and name change
   masterTL.call(() => {
@@ -637,13 +637,13 @@ function createTimeline() {
     gsap.to(iconLetter, {
       opacity: 0,
       scale: 0.8,
-      duration: 0.3,
+      duration: 0.15,
       ease: "power2.in",
       onComplete: () => {
         iconImage.style.display = 'block';
         gsap.fromTo(iconImage,
           { opacity: 0, scale: 1.2 },
-          { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+          { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }
         );
       }
     });
@@ -652,20 +652,20 @@ function createTimeline() {
     gsap.to(serverName, {
       opacity: 0,
       x: -10,
-      duration: 0.25,
+      duration: 0.12,
       ease: "power2.in",
       onComplete: () => {
         serverName.textContent = 'peak community';
         gsap.fromTo(serverName,
           { opacity: 0, x: 10 },
-          { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" }
+          { opacity: 1, x: 0, duration: 0.2, ease: "power2.out" }
         );
       }
     });
   });
 
   // Wait for branding animation
-  masterTL.to({}, { duration: 1 });
+  masterTL.to({}, { duration: 0.5 });
 
   // --- Final hold ---
   masterTL.to({}, { duration: 3 });

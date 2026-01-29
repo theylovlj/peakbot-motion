@@ -42,8 +42,8 @@ const botMessage = "sure, how minimal?";
 const userMessage2 = "just the basics";
 
 // Phase 3 messages
-const userMessage3 = "can you brand it";
-const botMessage2 = "on it";
+const userMessage3 = "can you brand it to peak?";
+const botMessage2 = "say less";
 
 const channelData = [
   { category: "INFO", channels: [

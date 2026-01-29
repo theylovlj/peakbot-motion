@@ -1,3 +1,4 @@
+// PeakBot Motion v1.3 - CHAT category from start
 // Elements
 const morphBox = document.getElementById('morphBox');
 const inputContent = document.getElementById('inputContent');

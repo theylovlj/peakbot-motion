@@ -134,6 +134,7 @@ body {
   transform: scale(0.75);
   transform-origin: top center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  perspective: 1500px;
 }
 
 /* Morph Box - the single container that transforms */
@@ -150,6 +151,7 @@ body {
   opacity: 0;
   overflow: hidden;
   will-change: transform, opacity, width, height, border-radius, background, border-color;
+  transform-style: preserve-3d;
 }
 
 /* Input content */
@@ -188,6 +190,7 @@ body {
   width: 100%;
   height: 100%;
   opacity: 0;
+  backface-visibility: hidden;
 }
 
 .channel-header {
@@ -238,8 +241,9 @@ body {
 .channel-category {
   margin-bottom: 4px;
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(40px) scale(0.92);
   will-change: transform, opacity;
+  transform-origin: center center;
   position: relative;
 }
 
@@ -268,12 +272,12 @@ body {
 .channel {
   display: flex;
   align-items: center;
-  padding: 10px 12px;
-  margin: 2px 0;
-  border-radius: 6px;
-  color: rgba(255,255,255,0.5);
-  font-size: 18px;
-  gap: 10px;
+  padding: 14px 16px;
+  margin: 3px 0;
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  font-size: 20px;
+  gap: 12px;
   transition: background 0.15s, color 0.15s;
 }
 
@@ -283,8 +287,8 @@ body {
 }
 
 .channel-icon {
-  font-size: 18px;
-  opacity: 0.6;
+  font-size: 20px;
+  opacity: 0.7;
 }
 
 .channel-name {
@@ -302,17 +306,17 @@ body {
 /* Chat Interface */
 .chat-container {
   position: absolute;
-  left: 200px;
+  left: 32%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
+  gap: 20px;
 }
 
 .chat-bubble {
-  padding: 32px 56px;
+  padding: 28px 48px;
   border-radius: 100px;
   opacity: 0;
   transform: translateY(20px);
@@ -329,7 +333,7 @@ body {
 
 .bot-bubble {
   background: #2b2d31;
-  border: 3px solid #2b2d31;
+  border: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .bot-bubble .chat-text {
@@ -367,6 +371,133 @@ body {
   position: relative;
 }
 
-.channel-category {
-  will-change: transform;
+/* Collapse & Absorb Animation States */
+.channel.survivor {
+  will-change: transform, filter, box-shadow;
+  position: relative;
+  z-index: 10;
+}
+
+.channel.to-remove {
+  will-change: transform, opacity, filter;
+  position: relative;
+  z-index: 5;
+}
+
+.category-to-remove {
+  will-change: transform, opacity;
+}
+
+/* Dark overlay with feathered mask */
+.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 32% 50%,
+    transparent 0%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.02) 35%,
+    rgba(0, 0, 0, 0.04) 50%,
+    rgba(0, 0, 0, 0.10) 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  z-index: 50;
+}
+
+.dark-overlay.right-focus {
+  background: radial-gradient(
+    circle at 68% 50%,
+    transparent 0%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.02) 35%,
+    rgba(0, 0, 0, 0.04) 50%,
+    rgba(0, 0, 0, 0.10) 100%
+  );
+}
+
+/* Simplified channels - slightly larger */
+.channels-container.simplified {
+  padding: 12px 10px;
+}
+
+.simplified-category {
+  margin-bottom: 8px;
+}
+
+.simplified-channel {
+  padding: 16px 16px;
+  margin: 4px 0;
+}
+
+/* Edit cursor */
+.edit-cursor {
+  position: absolute;
+  width: 22px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  transform-origin: top left;
+}
+
+/* Channel states for cursor edit */
+.channel.cursor-hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.channel.selected-delete {
+  background: rgba(237, 66, 69, 0.25);
+  color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1px rgba(237, 66, 69, 0.4);
+}
+
+.channel.being-dragged {
+  background: rgba(237, 66, 69, 0.4);
+  transform-origin: left center;
+  z-index: 100;
+  position: relative;
+}
+
+.category-header.selected-delete {
+  opacity: 0.5;
+}
+
+.channel.kept {
+  background: rgba(87, 242, 135, 0.15);
+}
+
+/* Chat container right side (Phase 3) */
+.chat-container-right {
+  left: auto;
+  right: 8%;
+  transform: translate(0, -50%);
+  align-items: flex-end;
+}
+
+/* Server icon with image support */
+.server-icon {
+  position: relative;
+}
+
+.icon-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.icon-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
 }

@@ -11,6 +11,17 @@ const botBubble = document.getElementById('botBubble');
 const botText = document.getElementById('botText');
 const userBubble2 = document.getElementById('userBubble2');
 const userText2 = document.getElementById('userText2');
+const darkOverlay = document.getElementById('darkOverlay');
+const editCursor = document.getElementById('editCursor');
+
+// Phase 3 elements
+const chatContainer2 = document.getElementById('chatContainer2');
+const userBubble3 = document.getElementById('userBubble3');
+const userText3 = document.getElementById('userText3');
+const botBubble2 = document.getElementById('botBubble2');
+const botText2 = document.getElementById('botText2');
+const serverIcon = document.getElementById('serverIcon');
+const serverName = document.getElementById('serverName');
 
 // Controls
 const playPauseBtn = document.getElementById('playPause');
@@ -24,43 +35,61 @@ const timeDisplay = document.getElementById('timeDisplay');
 const speedSelect = document.getElementById('speedSelect');
 
 // Config
-const textToType = "build me a gaming community";
-const userMessage1 = "can you move streams to the top?";
-const botMessage = "sure, which category?";
-const userMessage2 = "put it in info";
+const textToType = "build me a community for my fans";
+const userMessage1 = "can you simplify it?";
+const botMessage = "sure, how minimal?";
+const userMessage2 = "just the basics";
+
+// Phase 3 messages
+const userMessage3 = "can you name it peak community";
+const botMessage2 = "done";
 
 const channelData = [
   { category: "INFO", channels: [
     { name: "welcome", emoji: "👋" },
     { name: "rules", emoji: "📜" },
     { name: "announcements", emoji: "📢" },
-    { name: "roles", emoji: "🎭" }
+    { name: "server-updates", emoji: "🔔" }
   ]},
-  { category: "GENERAL", channels: [
+  { category: "COMMUNITY", channels: [
     { name: "general", emoji: "💬" },
+    { name: "introductions", emoji: "🙋" },
     { name: "off-topic", emoji: "🎲" },
-    { name: "media", emoji: "🖼️" },
-    { name: "bot-cmds", emoji: "🤖" }
-  ]},
-  { category: "GAMES", channels: [
-    { name: "valorant", emoji: "🎯" },
-    { name: "minecraft", emoji: "⛏️" },
-    { name: "fortnite", emoji: "🔫" },
-    { name: "league", emoji: "⚔️" },
-    { name: "apex", emoji: "🎮" },
-    { name: "cs2", emoji: "💣" }
+    { name: "memes", emoji: "😂" },
+    { name: "media", emoji: "🖼️" }
   ]},
   { category: "CONTENT", channels: [
-    { name: "clips", emoji: "🎬" },
-    { name: "streams", emoji: "📺" },
+    { name: "fan-art", emoji: "🎨" },
+    { name: "videos", emoji: "🎬" },
+    { name: "screenshots", emoji: "📸" },
     { name: "highlights", emoji: "🏆" }
   ]},
   { category: "VOICE", channels: [
-    { name: "Lobby", emoji: "🔊" },
-    { name: "Gaming 1", emoji: "🎮" },
-    { name: "Gaming 2", emoji: "🎮" },
-    { name: "Music", emoji: "🎵" },
-    { name: "AFK", emoji: "😴" }
+    { name: "lounge", emoji: "🔊" },
+    { name: "gaming", emoji: "🎮" },
+    { name: "music", emoji: "🎵" }
+  ], isVoice: true },
+  { category: "SUPPORT", channels: [
+    { name: "help", emoji: "❓" },
+    { name: "feedback", emoji: "💡" },
+    { name: "suggestions", emoji: "📝" }
+  ]}
+];
+
+// Simplified channels (after "simplify it")
+const simplifiedChannelData = [
+  { category: "INFO", channels: [
+    { name: "welcome", emoji: "👋" },
+    { name: "rules", emoji: "📜" },
+    { name: "announcements", emoji: "📢" }
+  ]},
+  { category: "CHAT", channels: [
+    { name: "general", emoji: "💬" },
+    { name: "media", emoji: "🖼️" }
+  ]},
+  { category: "VOICE", channels: [
+    { name: "lounge", emoji: "🔊" },
+    { name: "gaming", emoji: "🎮" }
   ], isVoice: true }
 ];
 
@@ -70,6 +99,8 @@ CustomEase.create("snappySpring", "M0,0 C0.12,0.98 0.24,1.02 1,1");
 CustomEase.create("morphEase", "M0,0 C0.4,0 0.1,1 1,1");
 CustomEase.create("silkySmooth", "M0,0 C0.25,0.1 0.25,1 1,1");
 CustomEase.create("gentleOut", "M0,0 C0.16,1 0.3,1 1,1");
+CustomEase.create("popOut", "M0,0 C0.2,1.3 0.4,1 1,1"); // overshoot then settle
+CustomEase.create("snapBack", "M0,0 C0.6,0 0.4,1.1 1,1"); // quick with slight overshoot
 
 // Build character spans for input text only
 function buildInputSpans() {
@@ -87,6 +118,9 @@ function setupChatText() {
   userText1.textContent = userMessage1;
   botText.textContent = botMessage;
   userText2.textContent = userMessage2;
+  // Phase 3
+  userText3.textContent = userMessage3;
+  botText2.textContent = botMessage2;
 }
 
 // Build channels
@@ -153,9 +187,20 @@ function createTimeline() {
   gsap.set(inputContent, { opacity: 1 });
   gsap.set('#inputText .char', { opacity: 0, y: 20 });
   gsap.set(channelContent, { opacity: 0 });
-  gsap.set('.channel-category', { opacity: 0, y: 40 });
+  gsap.set('.channel-category', { opacity: 0, y: 40, scale: 0.92 });
   gsap.set(channelsContainer, { y: 0 });
   gsap.set([userBubble1, botBubble, userBubble2], { opacity: 0, y: 20 });
+  gsap.set([userBubble3, botBubble2], { opacity: 0, y: 20 });
+  gsap.set(darkOverlay, { opacity: 0 });
+  darkOverlay.classList.remove('right-focus');
+  gsap.set(editCursor, { opacity: 0 });
+
+  // Reset server branding
+  const iconLetter = serverIcon.querySelector('.icon-letter');
+  const iconImage = serverIcon.querySelector('.icon-image');
+  gsap.set(iconLetter, { opacity: 1 });
+  gsap.set(iconImage, { opacity: 0, display: 'none' });
+  serverName.textContent = 'my community';
 
   // Create master timeline
   masterTL = gsap.timeline({
@@ -184,47 +229,66 @@ function createTimeline() {
   }, "-=0.4");
 
   // ========== PHASE 2: MORPH TRANSITION (stays centered) ==========
+  // Anticipation - slight scale up before transform
+  masterTL.to(morphBox, {
+    scale: 1.03,
+    duration: 0.12,
+    ease: "power2.in"
+  });
+
+  // Scale down with snap
+  masterTL.to(morphBox, {
+    scale: 0.96,
+    duration: 0.15,
+    ease: "power2.out"
+  });
+
+  // Fade out input content
   masterTL.to(inputContent, {
     opacity: 0,
-    scale: 0.97,
-    duration: 0.4,
-    ease: "silkySmooth"
-  }, "-=0.3");
+    scale: 0.94,
+    duration: 0.25,
+    ease: "power2.in"
+  }, "-=0.1");
 
+  // Main morph - expand and transform
   masterTL.to(morphBox, {
     width: 420,
     height: 724,
     borderRadius: 28,
     background: '#2b2d31',
     borderColor: '#2b2d31',
+    scale: 1,
     xPercent: -50,
     yPercent: -50,
-    duration: 0.8,
+    duration: 0.65,
     ease: "morphEase"
-  }, "-=0.35");
+  }, "-=0.15");
 
   // ========== PHASE 3: Channel Content Fades In ==========
   masterTL.to(channelContent, {
     opacity: 1,
-    duration: 0.4,
+    duration: 0.35,
     ease: "silkySmooth"
-  }, "-=0.4");
+  }, "-=0.35");
 
+  // Categories appear with scale and slide
   masterTL.to('.channel-category', {
     opacity: 1,
     y: 0,
-    duration: 0.45,
+    scale: 1,
+    duration: 0.5,
     stagger: {
-      each: 0.08,
-      ease: "power2.in"
+      each: 0.06,
+      ease: "power1.in"
     },
-    ease: "gentleOut"
-  }, "-=0.3");
+    ease: "snappySpring"
+  }, "-=0.25");
 
   // ========== PHASE 4: Scroll Through Channels ==========
   masterTL.to(channelsContainer, {
-    y: -300,
-    duration: 1.2,
+    y: -580,
+    duration: 1.8,
     ease: "morphEase"
   }, "-=0.2");
 
@@ -237,18 +301,25 @@ function createTimeline() {
 
   // ========== PHASE 5: Chat Conversation ==========
 
-  // User message 1 appears
+  // Fade in dark overlay with feathered mask
+  masterTL.to(darkOverlay, {
+    opacity: 1,
+    duration: 0.5,
+    ease: "power2.out"
+  }, "-=0.3");
+
+  // User message 1 appears - "can you simplify it?"
   masterTL.to(userBubble1, {
     opacity: 1,
     y: 0,
     duration: 0.5,
     ease: "gentleOut"
-  }, "-=0.5");
+  }, "-=0.3");
 
   // Pause before bot responds
-  masterTL.to({}, { duration: 0.4 });
+  masterTL.to({}, { duration: 0.5 });
 
-  // Bot response appears
+  // Bot response appears - "sure, how minimal?"
   masterTL.to(botBubble, {
     opacity: 1,
     y: 0,
@@ -257,9 +328,9 @@ function createTimeline() {
   });
 
   // Pause before user responds
-  masterTL.to({}, { duration: 0.4 });
+  masterTL.to({}, { duration: 0.5 });
 
-  // User message 2 appears
+  // User message 2 appears - "just the basics"
   masterTL.to(userBubble2, {
     opacity: 1,
     y: 0,
@@ -267,111 +338,344 @@ function createTimeline() {
     ease: "gentleOut"
   });
 
-  // Brief pause before action
-  masterTL.to({}, { duration: 0.5 });
+  // Pause before action
+  masterTL.to({}, { duration: 0.6 });
 
-  // ========== PHASE 6: Channel Rearranges ==========
+  // ========== PHASE 6: Simplify Channels ==========
+
+  // Fade out chat bubbles and overlay
+  masterTL.to([userBubble1, botBubble, userBubble2], {
+    opacity: 0,
+    y: -15,
+    duration: 0.4,
+    stagger: 0.06,
+    ease: "silkySmooth"
+  });
+
+  masterTL.to(darkOverlay, {
+    opacity: 0,
+    duration: 0.4,
+    ease: "power2.out"
+  }, "-=0.3");
+
+  // ========== PHASE 6: Move Server Back to Center FIRST ==========
+  masterTL.to(morphBox, {
+    left: '50%',
+    duration: 0.7,
+    ease: "morphEase"
+  }, "-=0.2");
 
   // Scroll back up smoothly
   masterTL.to(channelsContainer, {
     y: 0,
-    duration: 0.8,
+    duration: 0.5,
     ease: "silkySmooth"
-  });
+  }, "-=0.5");
 
   masterTL.to({}, { duration: 0.2 });
 
-  // Drag streams to top of INFO (above welcome)
+  // ========== PHASE 7: BATCH SELECT & DELETE (IMPROVED) ==========
+
+  const channelsToDelete = ['server-updates', 'introductions', 'off-topic', 'memes', 'music'];
+  const channelsToKeep = ['welcome', 'rules', 'announcements', 'general', 'media', 'lounge', 'gaming'];
+  const categoriesToRemove = ['CONTENT', 'SUPPORT'];
+
+  // --- Step 1: Channels to delete get red selection ---
   masterTL.call(() => {
-    const streamsChannel = document.querySelector('[data-channel="streams"]');
-    const infoCategory = document.querySelector('[data-category="INFO"]');
-    const generalCategory = document.querySelector('[data-category="GENERAL"]');
-    const gamesCategory = document.querySelector('[data-category="GAMES"]');
-    const contentCategory = document.querySelector('[data-category="CONTENT"]');
-    const welcomeChannel = document.querySelector('[data-channel="welcome"]');
+    channelsToDelete.forEach((name, i) => {
+      const ch = document.querySelector(`.channel[data-channel="${name}"]`);
+      if (ch) {
+        gsap.to(ch, {
+          backgroundColor: 'rgba(237, 66, 69, 0.4)',
+          boxShadow: '0 0 15px rgba(237, 66, 69, 0.6)',
+          scale: 1.02,
+          delay: i * 0.08,
+          duration: 0.25,
+          ease: "power2.out"
+        });
+      }
+    });
 
-    if (streamsChannel && infoCategory && welcomeChannel) {
-      // Use offsetTop for accurate positions (not affected by GSAP transforms)
-      // Calculate total offset from container top
-      const streamsOffsetTop = streamsChannel.offsetTop + contentCategory.offsetTop;
-      const welcomeOffsetTop = welcomeChannel.offsetTop + infoCategory.offsetTop;
-
-      // Distance to move up
-      const moveUpDistance = streamsOffsetTop - welcomeOffsetTop;
-
-      // Height of streams channel for pushing others down
-      const streamsHeight = streamsChannel.offsetHeight + 2;
-
-      // Highlight streams
-      streamsChannel.classList.add('highlight');
-      streamsChannel.classList.add('dragging');
-
-      const dragTL = gsap.timeline();
-
-      // Step 1: Lift streams
-      dragTL.to(streamsChannel, {
-        scale: 1.15,
-        x: 15,
-        zIndex: 100,
-        duration: 0.3,
-        ease: "power2.out"
-      });
-
-      // Step 2: Move streams up to welcome's position
-      dragTL.to(streamsChannel, {
-        y: -moveUpDistance,
-        duration: 0.9,
-        ease: "power2.inOut"
-      });
-
-      // Step 3: Push all INFO channels down
-      const infoChannels = infoCategory.querySelectorAll('.channel');
-      dragTL.to(infoChannels, {
-        y: streamsHeight,
-        duration: 0.6,
-        ease: "power2.out",
-        stagger: 0.02
-      }, "-=0.7");
-
-      // Push GENERAL and GAMES categories down (they're between INFO and streams source)
-      dragTL.to([generalCategory, gamesCategory], {
-        y: streamsHeight,
-        duration: 0.6,
-        ease: "power2.out",
-        stagger: 0.03
-      }, "<");
-
-      // Step 4: Place streams down
-      dragTL.to(streamsChannel, {
-        scale: 1,
-        x: 0,
-        duration: 0.3,
-        ease: "power2.out"
-      });
-    }
+    // Categories get marked
+    categoriesToRemove.forEach((catName, i) => {
+      const cat = document.querySelector(`.channel-category[data-category="${catName}"]`);
+      if (cat) {
+        gsap.to(cat, {
+          backgroundColor: 'rgba(237, 66, 69, 0.12)',
+          boxShadow: '0 0 10px rgba(237, 66, 69, 0.3)',
+          delay: 0.4 + i * 0.1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      }
+    });
   });
 
-  masterTL.to({}, { duration: 2.4 });
+  masterTL.to({}, { duration: 1 });
 
-  // Remove highlight
+  // --- Step 3: Glow pulses brighter (confirmation) ---
   masterTL.call(() => {
-    const streamsChannel = document.querySelector('[data-channel="streams"]');
-    if (streamsChannel) {
-      streamsChannel.classList.remove('dragging');
-      streamsChannel.classList.remove('highlight');
+    channelsToDelete.forEach((name) => {
+      const ch = document.querySelector(`.channel[data-channel="${name}"]`);
+      if (ch) {
+        gsap.to(ch, {
+          boxShadow: '0 0 25px rgba(237, 66, 69, 0.8)',
+          duration: 0.2,
+          ease: "power2.in"
+        });
+      }
+    });
+  });
+
+  masterTL.to({}, { duration: 0.4 });
+
+  // --- Step 4: Delete all selected (smooth slide out) ---
+  masterTL.call(() => {
+    // Channels to delete that are NOT in categories being fully removed
+    const channelsInSurvivingCategories = ['server-updates', 'introductions', 'off-topic', 'memes', 'music'];
+
+    channelsInSurvivingCategories.forEach((name, i) => {
+      const ch = document.querySelector(`.channel[data-channel="${name}"]`);
+      if (ch) {
+        const currentHeight = ch.offsetHeight;
+        gsap.set(ch, { height: currentHeight, overflow: 'hidden' });
+
+        const exitTL = gsap.timeline({ delay: i * 0.06 });
+
+        // Slight anticipation
+        exitTL.to(ch, {
+          x: 8,
+          scale: 1.04,
+          duration: 0.12,
+          ease: "power2.out"
+        });
+
+        // Main slide out with blur and fade
+        exitTL.to(ch, {
+          x: -120,
+          scale: 0.92,
+          opacity: 0,
+          rotation: -3,
+          filter: 'blur(4px)',
+          duration: 0.5,
+          ease: "power2.inOut"
+        });
+
+        // Smooth height collapse
+        exitTL.to(ch, {
+          height: 0,
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginTop: 0,
+          marginBottom: 0,
+          duration: 0.4,
+          ease: "power3.inOut"
+        }, "-=0.25");
+      }
+    });
+
+    // Entire categories slide out as one clean unit
+    categoriesToRemove.forEach((catName, i) => {
+      const cat = document.querySelector(`.channel-category[data-category="${catName}"]`);
+      if (cat) {
+        const currentHeight = cat.offsetHeight;
+        gsap.set(cat, { height: currentHeight, overflow: 'hidden' });
+
+        // Stagger after individual channels start leaving
+        const exitTL = gsap.timeline({ delay: 0.25 + i * 0.15 });
+
+        // Subtle anticipation for the whole section
+        exitTL.to(cat, {
+          x: 5,
+          scale: 1.01,
+          duration: 0.1,
+          ease: "power2.out"
+        });
+
+        // Clean slide out - whole section together
+        exitTL.to(cat, {
+          x: -80,
+          opacity: 0,
+          filter: 'blur(2px)',
+          duration: 0.45,
+          ease: "power2.inOut"
+        });
+
+        // Smooth height collapse - sneaky close the gap
+        exitTL.to(cat, {
+          height: 0,
+          marginTop: 0,
+          marginBottom: 0,
+          duration: 0.5,
+          ease: "power3.inOut"
+        }, "-=0.2");
+      }
+    });
+  });
+
+  masterTL.to({}, { duration: 1.2 });
+
+  // --- Step 5: Clean up deleted elements & settle ---
+  masterTL.call(() => {
+    // Remove collapsed elements from DOM (they have height: 0)
+    channelsToDelete.forEach((name) => {
+      const ch = document.querySelector(`.channel[data-channel="${name}"]`);
+      if (ch) ch.remove();
+    });
+
+    categoriesToRemove.forEach((catName) => {
+      const cat = document.querySelector(`.channel-category[data-category="${catName}"]`);
+      if (cat) cat.remove();
+    });
+
+    // Rename COMMUNITY to CHAT
+    const communityCategory = document.querySelector('.channel-category[data-category="COMMUNITY"]');
+    if (communityCategory) {
+      communityCategory.dataset.category = 'CHAT';
+      const categoryName = communityCategory.querySelector('.category-name');
+      if (categoryName) categoryName.textContent = 'CHAT';
     }
+
+    // Reset only the selection highlight styles on remaining channels
+    const remainingChannels = document.querySelectorAll('.channel');
+    remainingChannels.forEach((ch) => {
+      gsap.to(ch, {
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+        duration: 0.2,
+        ease: "power2.out"
+      });
+    });
+
+    const remainingCategories = document.querySelectorAll('.channel-category');
+    remainingCategories.forEach((cat) => {
+      gsap.to(cat, {
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+        duration: 0.2,
+        ease: "power2.out"
+      });
+    });
   });
 
   masterTL.to({}, { duration: 0.3 });
 
-  // Fade out chat smoothly
-  masterTL.to([userBubble1, botBubble, userBubble2], {
+  // ========== PHASE 8: THIRD CHAT - BRANDING ==========
+
+  // Brief pause before next phase
+  masterTL.to({}, { duration: 0.8 });
+
+  // Move server to left side
+  masterTL.to(morphBox, {
+    left: '32%',
+    duration: 0.8,
+    ease: "morphEase"
+  });
+
+  // Switch overlay to right focus and fade in
+  masterTL.call(() => {
+    darkOverlay.classList.add('right-focus');
+  });
+
+  masterTL.to(darkOverlay, {
+    opacity: 1,
+    duration: 0.4,
+    ease: "power2.out"
+  }, "-=0.3");
+
+  // User message 3 appears - "can you name it peak community"
+  masterTL.to(userBubble3, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    ease: "gentleOut"
+  }, "-=0.2");
+
+  // Pause before bot responds
+  masterTL.to({}, { duration: 0.6 });
+
+  // Bot response appears - "done"
+  masterTL.to(botBubble2, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    ease: "gentleOut"
+  });
+
+  // Pause before action
+  masterTL.to({}, { duration: 0.5 });
+
+  // Fade out chat and overlay
+  masterTL.to([userBubble3, botBubble2], {
     opacity: 0,
     y: -15,
-    duration: 0.5,
-    stagger: 0.08,
+    duration: 0.4,
+    stagger: 0.06,
     ease: "silkySmooth"
   });
+
+  masterTL.to(darkOverlay, {
+    opacity: 0,
+    duration: 0.4,
+    ease: "power2.out"
+  }, "-=0.3");
+
+  masterTL.call(() => {
+    darkOverlay.classList.remove('right-focus');
+  });
+
+  // Move server back to center
+  masterTL.to(morphBox, {
+    left: '50%',
+    duration: 0.6,
+    ease: "morphEase"
+  }, "-=0.2");
+
+  // ========== PHASE 9: BRANDING CHANGE ==========
+
+  masterTL.to({}, { duration: 0.3 });
+
+  // Animate server icon and name change
+  masterTL.call(() => {
+    const iconLetter = serverIcon.querySelector('.icon-letter');
+    const iconImage = serverIcon.querySelector('.icon-image');
+
+    // Fade out letter, fade in image
+    gsap.to(iconLetter, {
+      opacity: 0,
+      scale: 0.8,
+      duration: 0.3,
+      ease: "power2.in",
+      onComplete: () => {
+        iconImage.style.display = 'block';
+        gsap.fromTo(iconImage,
+          { opacity: 0, scale: 1.2 },
+          { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+        );
+      }
+    });
+
+    // Animate server name change
+    gsap.to(serverName, {
+      opacity: 0,
+      x: -10,
+      duration: 0.25,
+      ease: "power2.in",
+      onComplete: () => {
+        serverName.textContent = 'peak community';
+        gsap.fromTo(serverName,
+          { opacity: 0, x: 10 },
+          { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" }
+        );
+      }
+    });
+  });
+
+  // Wait for branding animation
+  masterTL.to({}, { duration: 1 });
+
+  // --- Final hold ---
+  masterTL.to({}, { duration: 3 });
 
   return masterTL;
 }
@@ -401,6 +705,7 @@ function updatePlayPauseIcon() {
 playPauseBtn.addEventListener('click', () => {
   if (masterTL.progress() === 1) {
     masterTL.kill();
+    lastProgress = 0;
     createTimeline();
     isPlaying = true;
   } else if (isPlaying) {
@@ -415,15 +720,28 @@ playPauseBtn.addEventListener('click', () => {
 
 restartBtn.addEventListener('click', () => {
   masterTL.kill();
+  lastProgress = 0;
   createTimeline();
   isPlaying = true;
   updatePlayPauseIcon();
 });
 
+let lastProgress = 0;
 timeline.addEventListener('input', (e) => {
   const progress = e.target.value / 100;
-  masterTL.pause();
-  masterTL.progress(progress);
+
+  // If seeking backwards significantly, rebuild timeline
+  if (progress < lastProgress - 0.05) {
+    masterTL.kill();
+    createTimeline();
+    masterTL.pause();
+    masterTL.progress(progress);
+  } else {
+    masterTL.pause();
+    masterTL.progress(progress);
+  }
+
+  lastProgress = progress;
   isPlaying = false;
   updatePlayPauseIcon();
 });
